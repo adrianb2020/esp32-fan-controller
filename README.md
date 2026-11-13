@@ -3,6 +3,10 @@
 This project can control up to six 6-8 fans via ESPhome and Home Assistant  
 If no Home Assistant is used, a web_server needs to be declared in ESPhome configuration
 
+## Schematic
+
+![ESP32 Controller Schematic](images/schematic.svg)
+
 ## Components used in this project:
 
 | Reference | Component |
