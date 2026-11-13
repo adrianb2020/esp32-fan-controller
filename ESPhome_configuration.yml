@@ -1,0 +1,213 @@
+# web_server:
+#   port: 80
+
+output:
+  - platform: ledc
+    pin: 13 # Replace with your actual GPIO pin
+    frequency: 25000 Hz
+    id: cpufan_pwm
+    
+  - platform: ledc
+    pin: 27 # Replace with your actual GPIO pin
+    frequency: 25000 Hz
+    id: hddfan_pwm
+  
+  - platform: ledc
+    pin: 25 # Replace with your actual GPIO pin
+    frequency: 25000 Hz
+    id: sys1fan_pwm
+
+  - platform: ledc
+    pin: 32 # Replace with your actual GPIO pin
+    frequency: 25000 Hz
+    id: sys2fan_pwm
+
+  - platform: ledc
+    pin: 3 # Replace with your actual GPIO pin
+    frequency: 25000 Hz
+    id: sys3fan_pwm
+
+#  - platform: ledc
+#    pin: 18 # Replace with your actual GPIO pin
+#    frequency: 25000 Hz
+#    id: sys4fan_pwm
+    
+fan:
+  - platform: speed
+    speed_count: 100 # Number of speed levels available
+    output: cpufan_pwm
+    name: "CPU"
+
+  - platform: speed
+    speed_count: 100 # Number of speed levels available
+    output: hddfan_pwm
+    name: "HDD"
+
+  - platform: speed
+    speed_count: 100 # Number of speed levels available
+    output: sys1fan_pwm
+    name: "SYS 1"
+
+  - platform: speed
+    speed_count: 100 # Number of speed levels available
+    output: sys2fan_pwm
+    name: "SYS 2"
+
+  - platform: speed
+    speed_count: 100 # Number of speed levels available
+    output: sys3fan_pwm
+    name: "SYS 3"
+
+#  - platform: speed
+#    speed_count: 100 # Number of speed levels available
+#    output: sys4fan_pwm
+#    name: "SYS 4"
+
+sensor:
+  - platform: pulse_counter
+    pin:
+      number: 14 # Replace with your actual GPIO pin
+      mode:
+        input: true # Configures the pin as an input to read signals
+        pullup: false  # Since you have an external pull-up
+    name: 'CPU'
+    id: cpufan_pulse
+    unit_of_measurement: 'RPM'
+    accuracy_decimals: 0  # Removes decimals
+    filters:
+      multiply: 0.5  # Multiply by 0.5 to convert Hz to RPM (since 2 pulses per revolution)
+    count_mode:
+      rising_edge: INCREMENT
+      falling_edge: DISABLE
+    update_interval: 3s
+    
+  - platform: pulse_counter
+    pin:
+      number: 26 # Replace with your actual GPIO pin
+      mode:
+        input: true # Configures the pin as an input to read signals
+        pullup: false  # Since you have an external pull-up
+    name: 'HDD'
+    id: hddfan_pulse
+    unit_of_measurement: 'RPM'
+    accuracy_decimals: 0  # Removes decimals
+    filters:
+      multiply: 0.5  # Multiply by 0.5 to convert Hz to RPM (since 2 pulses per revolution)
+    count_mode:
+      rising_edge: INCREMENT
+      falling_edge: DISABLE
+    update_interval: 3s
+
+  - platform: pulse_counter
+    pin:
+      number: 33 # Replace with your actual GPIO pin
+      mode:
+        input: true # Configures the pin as an input to read signals
+        pullup: false  # Since you have an external pull-up
+    name: 'SYS 1'
+    id: sys1fan_pulse
+    unit_of_measurement: 'RPM'
+    accuracy_decimals: 0  # Removes decimals
+    filters:
+      multiply: 0.5  # Multiply by 0.5 to convert Hz to RPM (since 2 pulses per revolution)
+    count_mode:
+      rising_edge: INCREMENT
+      falling_edge: DISABLE
+    update_interval: 3s
+
+  - platform: pulse_counter
+    pin:
+      number: 17 # Replace with your actual GPIO pin
+      mode:
+        input: true # Configures the pin as an input to read signals
+        pullup: false  # Since you have an external pull-up  / PINs 34-36 does not support internal pull-up
+    name: 'SYS 2'
+    id: sys2fan_pulse
+    unit_of_measurement: 'RPM'
+    accuracy_decimals: 0  # Removes decimals
+    filters:
+      multiply: 0.5  # Multiply by 0.5 to convert Hz to RPM (since 2 pulses per revolution)
+    count_mode:
+      rising_edge: INCREMENT
+      falling_edge: DISABLE
+    update_interval: 3s
+
+  - platform: pulse_counter
+    pin:
+      number: 1 # Replace with your actual GPIO pin
+      mode:
+        input: true # Configures the pin as an input to read signals
+        pullup: false  # Since you have an external pull-up
+    name: 'SYS 3'
+    id: sys3fan_pulse
+    unit_of_measurement: 'RPM'
+    accuracy_decimals: 0  # Removes decimals
+    filters:
+      multiply: 0.5  # Multiply by 0.5 to convert Hz to RPM (since 2 pulses per revolution)
+    count_mode:
+      rising_edge: INCREMENT
+      falling_edge: DISABLE
+    update_interval: 3s
+
+#  - platform: pulse_counter
+#    pin:
+#      number: 19 # Replace with your actual GPIO pin
+#      mode:
+#        input: true # Configures the pin as an input to read signals
+#        pullup: false  # Since you have an external pull-up
+#    name: 'SYS 4'
+#    id: sys4fan_pulse
+#    unit_of_measurement: 'RPM'
+#    accuracy_decimals: 0  # Removes decimals
+#    filters:
+#      multiply: 0.5  # Multiply by 0.5 to convert Hz to RPM (since 2 pulses per revolution)
+#    count_mode:
+#      rising_edge: INCREMENT
+#      falling_edge: DISABLE
+#    update_interval: 3s
+
+  - platform: hdc1080
+    temperature:
+      name: "HDC1080 Temperature"
+    humidity:
+      name: "HDC1080 Humidity"
+    update_interval: 15s
+
+i2c:
+  sda: GPIO21
+  scl: GPIO22
+  scan: true
+  id: bus_a
+
+switch:
+  - platform: gpio
+    pin:
+      number: 16
+      allow_other_uses: true
+    id: shortXeonW
+    name: "Short Press"
+    icon: "mdi:power"
+    on_turn_on:
+    - delay: 150ms
+    - switch.turn_off: shortXeonW
+  - platform: gpio
+    pin:
+      number: 16
+      allow_other_uses: true
+    id: longXeonW
+    name: "Long Press"
+    icon: "mdi:power"
+    on_turn_on:
+    - delay: 4000ms
+    - switch.turn_off: longXeonW
+
+binary_sensor:
+  - platform: gpio
+    pin:
+      number: 23
+      inverted: true # Inverted if optocoupler pulls low when active
+      mode:
+        input: true # Configures the pin as an input to read signals
+        pullup: false  # Since you have an external pull-up / ESP32 PINs 34-36 does not support internal pull-up
+    name: "Power State"
+    icon: "mdi:lightbulb-question"
