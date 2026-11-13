@@ -1,5 +1,7 @@
+# Title
 ESPHome Fan Controller
 
+## Components
 Components used in this project:
 
 U1                          ESP32 DevKit V1
