@@ -3,6 +3,8 @@
 This project can control up to six 6-8 fans via ESPhome and Home Assistant  
 If no Home Assistant is used, a web_server needs to be declared in ESPhome configuration
 
+[![Watch the video](https://img.youtube.com/vi/VIDEO_ID/maxresdefault.jpg)](https://www.youtube.com/watch?v=VIDEO_ID)
+
 ## Schematic
 
 ![Schematic](Schematic.svg)
