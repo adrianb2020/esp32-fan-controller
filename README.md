@@ -5,7 +5,7 @@ If no Home Assistant is used, a web_server needs to be declared in ESPhome confi
 
 ## Schematic
 
-![ESP32 Controller Schematic](images/schematic.svg)
+![Schematic](schematic.svg)
 
 ## Components used in this project:
 
