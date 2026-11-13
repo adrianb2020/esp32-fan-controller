@@ -3,7 +3,6 @@ ESPHome Fan Controller
 Components used in this project:
 
 U1                          ESP32 DevKit V1
-
 U2 U3                       SN74AHCT125DR Quadruple Bus Buffer
 U4                          MOCD207R2M 2ch Optocoupler
 C1 C2 C4                    MLCC 1206 0.1uf 25V
