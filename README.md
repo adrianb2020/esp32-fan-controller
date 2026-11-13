@@ -1,8 +1,6 @@
-# Title
-ESPHome Fan Controller
+# ESPHome Fan Controller
 
-## Components
-Components used in this project:
+## Components used in this project:
 
 U1                          ESP32 DevKit V1
 U2 U3                       SN74AHCT125DR Quadruple Bus Buffer
