@@ -1,0 +1,68 @@
+alias: Fan - CPU or Ambient Temperature Control
+description: >
+  - This automation controls the CPU fan (Be Quiet Shadow Wings 2 / 120 PWM 1100 @ 15.9) based on the Unraid server CPU temperature using a step-based PWM approach.
+  - Max PWM is 100% for 1150 rpm
+  - Fan is completely off below 25°C. 
+  - Above 25°C, step-based PWM mapping is applied with smooth ramping and logging.
+  - Triggers on temp changes, HA start, and automation reload.
+  - Manual fan changes are detected and corrected back toward the script-defined PWM.
+
+initial_state: true
+
+trigger:
+  # Trigger immediately on HA start
+  - event: start
+    trigger: homeassistant
+  # Trigger when automation is reloaded
+  - event_type: automation_reloaded
+    trigger: event
+  # Trigger when automation is started
+  - entity_id: automation.NAME
+    to: on
+    trigger: state
+  # Trigger when CPU temp changes
+  - entity_id: sensor.TEMP_NAME # CPU temp or other temperature sensor NAME
+    trigger: state
+  # Trigger if fan PWM is manually changed
+  - entity_id: fan.FAN_NAME
+    trigger: state
+
+variables:
+  # Read current CPU temperature
+  temp: "{{ states('sensor.TEMP_NAME') | float(0) }}"
+  
+  # Step-based PWM mapping
+  cpu_target_pwm: >
+    {% set t = temp | float %}
+    {% if t <= 25 %}0       {# 0 rpm #}
+    {% elif t <= 27 %}10    {# 475 rpm #}
+    {% elif t <= 29 %}20    {# 525 rpm #}
+    {% elif t <= 31 %}30    {# 610 rpm #}
+    {% elif t <= 33 %}40    {# 690 rpm #}   
+    {% elif t <= 35 %}50    {# 765 rpm #}
+    {% elif t <= 37 %}60    {# 845 rpm #}
+    {% elif t <= 39 %}70    {# 915 rpm #}
+    {% elif t <= 41 %}80    {# 1000 rpm #}
+    {% elif t <= 44 %}90    {# 1075 rpm #}
+    {% else %}100           {# 1150 rpm #}
+    {% endif %}
+    
+  # Read current fan RPM for logging
+  last_fan_rpm: "{{ states('sensor.RPM_NAME') | float(0) }}"
+  
+action:
+  # Log CPU state
+  - service: system_log.write
+    data:
+      level: info
+      message: >
+        Temp: {{ temp }}°C,
+        PWM target: {{ cpu_target_pwm }}%,
+        RPM: {{ last_fan_rpm }}
+
+  # Set fan PWM
+  - service: fan.set_percentage
+    target:
+      entity_id: fan.FAN_NAME
+    data:
+      percentage: "{{ cpu_target_pwm | int }}"
