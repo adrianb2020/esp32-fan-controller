@@ -7,7 +7,7 @@ If no Home Assistant is used, a web_server needs to be declared in ESPhome confi
 
 - 3 connectors for external DS18B20+ temperature sensors
 - 1 connector for an I2C temperature sensor
-- included Power State/Switch via MOCD207R2M optocoupler (Reads computer state and can turn power on/off)
+- included Power State/Switch via MOCD207R2M optocoupler (reads computer state via power LED and can be turned on/off)
 
 [![Watch the video](https://img.youtube.com/vi/VIDEO_ID/maxresdefault.jpg)](https://www.youtube.com/watch?v=VIDEO_ID)
 
