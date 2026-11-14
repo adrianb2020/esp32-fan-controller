@@ -1,5 +1,8 @@
 alias: Fan - CPU or Ambient Temperature Control
 description: >
+
+  - CHANGE DESCRIPTION ACCORDING TO YOUR NEED 
+  
   - This automation controls the CPU fan (Be Quiet Shadow Wings 2 / 120 PWM 1100 @ 15.9) based on the Unraid server CPU temperature using a step-based PWM approach.
   - Max PWM is 100% for 1150 rpm
   - Fan is completely off below 25°C. 
