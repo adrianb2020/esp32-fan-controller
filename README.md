@@ -9,7 +9,7 @@ If no Home Assistant is used, a web_server needs to be declared in ESPhome confi
 - 1 connector for an I2C temperature sensor
 - included Power State/Switch via MOCD207R2M optocoupler (reads computer state via power LED and can be turned on/off)
 
-[![Watch the video]([https://img.youtube.com/vi/YOUR_REAL_ID/maxresdefault.jpg](https://img.shields.io/badge/Watch%20on-YouTube-red?logo=youtube&logoColor=white))](https://youtu.be/DUz9HqbQou8)
+[![Watch the video](thumbnail.png)](https://youtu.be/DUz9HqbQou8)
 
 ## Schematic
 
